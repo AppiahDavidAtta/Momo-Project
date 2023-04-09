@@ -1,0 +1,110 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class MobileMoney {
+private:
+    string pin;
+    double balance;
+public:
+    MobileMoney() {
+        pin = "0000";
+        balance = 1000;
+    }
+    void authenticate() {
+        int attempts = 0;
+        while (true) {
+            string input;
+            cout << "Enter PIN: ";
+            cin >> input;
+            if (input == pin) {
+                cout << "Authentication successful!" << endl;
+                break;
+            }
+            else {
+                attempts++;
+                if (attempts == 3) {
+                    cout << "Too many unsuccessful attempts. Program will exit." << endl;
+                    exit(0);
+                }
+                else {
+                    cout << "Invalid PIN. Please try again." << endl;
+                }
+            }
+        }
+    }
+    void changePin() {
+        string currentPin, newPin, confirmPin;
+        cout << "Enter current PIN: ";
+        cin >> currentPin;
+        if (currentPin == pin) {
+            cout << "Enter new PIN: ";
+            cin >> newPin;
+            cout << "Confirm new PIN: ";
+            cin >> confirmPin;
+            if (newPin == confirmPin) {
+                pin = newPin;
+                cout << "PIN changed successfully!" << endl;
+            }
+            else {
+                cout << "PINs do not match. PIN change aborted." << endl;
+            }
+        }
+        else {
+            cout << "Invalid PIN. PIN change aborted." << endl;
+        }
+    }
+    void checkBalance() {
+        cout << "Your balance is: " << balance << endl;
+    }
+    void sendMoney() {
+        string recipient;
+        double amount;
+        cout << "Enter recipient's mobile number: ";
+        cin >> recipient;
+        cout << "Enter amount to send: ";
+        cin >> amount;
+        if (amount <= balance) {
+            balance -= amount;
+            cout << "Transaction successful! " << amount << " sent to " << recipient << "." << endl;
+        }
+        else {
+            cout << "Insufficient balance. Transaction aborted." << endl;
+        }
+    }
+};
+
+int main() {
+    MobileMoney myMoney;
+    while (true) {
+        int choice;
+        cout << "Mobile Money Service" << endl;
+        cout << "1: Authenticate" << endl;
+        cout << "2: Change PIN" << endl;
+        cout << "3: Check balance" << endl;
+        cout << "4: Send money" << endl;
+        cout << "5: Exit" << endl;
+        cout << "Enter choice: ";
+        cin >> choice;
+        switch (choice) {
+        case 1:
+            myMoney.authenticate();
+            break;
+        case 2:
+            myMoney.changePin();
+            break;
+        case 3:
+            myMoney.checkBalance();
+            break;
+        case 4:
+            myMoney.sendMoney();
+            break;
+        case 5:
+            exit(0);
+            break;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+    return 0;
+}
